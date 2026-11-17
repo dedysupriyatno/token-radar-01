@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Token Launch Radar — pre-token protocols ranked by implied value</title>
+<link rel="stylesheet" href="app.css">
+</head>
+<body>
+<header class="top">
+  <div class="wrap">
+    <p class="kicker">MAKE.FUN TOKEN-RADAR-01 &middot; SNAPSHOT <span id="asOf">—</span></p>
+    <h1>Token Launch Radar</h1>
+    <p class="lede">Which protocol that <strong>records no token yet</strong> would be worth the most if it launched one — and what to do to farm it. Implied value is this entry&rsquo;s own claim from the snapshot&rsquo;s figures, never a prediction that a token will launch.</p>
+    <dl class="stats">
+      <div><dt>Board rows</dt><dd id="statRows">—</dd></div>
+      <div><dt>Watchlist</dt><dd id="statWatch">—</dd></div>
+      <div><dt>Pre-token in snapshot</dt><dd id="statPre">—</dd></div>
+      <div><dt>Already trading</dt><dd id="statTrading">—</dd></div>
+      <div><dt>Watchlist floor</dt><dd id="statFloor">—</dd></div>
+    </dl>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="controls" aria-label="Board controls">
+    <label class="ctl grow">Search
+      <input id="q" type="search" placeholder="Protocol name or slug…" autocomplete="off">
+    </label>
+    <label class="ctl">Category
+      <select id="cat"><option value="">All categories</option></select>
+    </label>
+    <label class="ctl">Chain
+      <select id="chain"><option value="">All chains</option></select>
+    </label>
+    <label class="chk"><input id="watchOnly" type="checkbox"> Watchlist only</label>
+    <label class="chk"><input id="preOnly" type="checkbox" checked> Pre-token only</label>
+    <p class="count" id="count" role="status"></p>
+  </section>
+
+  <noscript><p class="empty">This board needs JavaScript: it renders its data from data.js, written beside it by main.ts.</p></noscript>
+  <section id="detail" class="detail" hidden aria-live="polite"></section>
+
+  <section class="tablewrap">
+    <table id="board">
+      <thead><tr>
+        <th><button data-sort="rank" type="button">Rank</button></th>
+        <th><button data-sort="name" type="button">Protocol</button></th>
+        <th><button data-sort="category" type="button">Category</button></th>
+        <th>Chains</th>
+        <th class="num"><button data-sort="tvl_usd" type="button">TVL</button></th>
+        <th class="num"><button data-sort="change_7d" type="button">7d</button></th>
+        <th class="num"><button data-sort="implied_value_usd" type="button">Implied value</button></th>
+        <th class="num">Age</th>
+      </tr></thead>
+      <tbody id="rows"></tbody>
+    </table>
+    <p id="empty" class="empty" hidden>No protocol matches these filters. Clear the search or widen the category.</p>
+  </section>
+
+  <section class="method">
+    <h2>How the implied value is worked out</h2>
+    <p><code>implied value = TVL &times; category multiple &times; growth factor &times; age factor</code>, capped at $100,000,000,000 and rounded to whole dollars. The category multiple runs 0.55 for a CEX to 1.30 for Lending (1.00 when the category is unknown); the growth factor is <code>1 + clamp(7-day TVL change, &minus;50%, +100%) / 200</code>; the age factor is <code>1 + 0.08 &times; min(years since listed, 5)</code>. A protocol counts as pre-token only when the snapshot records no token for it at all — its CoinGecko id, symbol and market cap are all null. Protocols whose token already trades are counted above and left off the board, so a launch that already happened never competes with one still to come. Farm steps are written per category and chain from the snapshot&rsquo;s own fields; a token is never guaranteed, so only farm with money you can afford to leave in the protocol.</p>
+  </section>
+</main>
+
+<footer class="wrap foot">
+  <p>Token Launch Radar &middot; data: DefiLlama snapshot as of <span id="asOf2">—</span> &middot; built by an agent for the make.fun token-radar-01 bounty.</p>
+</footer>
+
+<script src="../data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
